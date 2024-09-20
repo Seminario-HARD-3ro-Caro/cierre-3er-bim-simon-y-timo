@@ -1,13 +1,13 @@
 // Ejercicio evaluatorio 3er bimestre
 /*
   Integrantes
-    Nombre:
-    Apellido:
-    Curso:
+    Nombre: Simon
+    Apellido: Mersich
+    Curso:3E
     
-    Nombre:
-    Apellido:
-    Curso:
+    Nombre: Timoteo
+    Apellido: czerwiak
+    Curso: 3A
   
 Congisgnas
   Conexionado:
@@ -15,14 +15,14 @@ Congisgnas
     Se debe conectar tambien, un pulsador que permita recibir información de un usuario.
     Indicar a continuación los pines a los cuales se conectó cada elemento y el valor de resistencias utilizado:
       Pines:
-        Boton:
-        LED1:
-        LED2:
-        LED3:
-        LED4:
+        Boton: 12
+        LED1: 2
+        LED2: 4
+        LED3: 7
+        LED4: 8
       Valor:
-        R_boton:
-        R_LEDs:
+        R_boton:  330 ohms
+        R_LEDs: 4730 ohms
 
   Progamas:
     Se deben entregar un programa distinto por cada punto. Los programas son una modificación entre ellos.
@@ -44,13 +44,54 @@ Congisgnas
         IMPORTANTE: si el nro es mayor a 15 se deberá enviar un mensaje de error. 
 
 */ 
+// definir los pines
+#define PINBOTON 12
+#define LED1 2
+#define LED2 4
+#define LED3 7
+#define LED4 8
 
+// estado del boton para que no haya rebounce
+bool estado = false;
 
+// ejercicio 1
 void setup() {
   // Configuración del arduino
+  // configurar los pines
+
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(LED3, OUTPUT);
+  pinMode(LED4, OUTPUT);
+ 
+ // empezar serial
+  Serial.begin(9600);
+
+  
 }
 
+int i = 0;
 void loop() {
-  // Logica del programa
 
-}
+  // array para iterar por los leds
+  int arr[4];  
+  arr[0] = LED1;
+  arr[1] = LED2;
+  arr[2] = LED3;
+  arr[3] = LED4;
+  
+  //leer serial y asignaro a i
+  i = Serial.parseInt();
+
+  // si i es mayor a 15
+if (i > 15) {
+      Serial.println("Error: Ingrese un número menor o igual a 15");
+    } else {
+    
+    for (int j = 0; j < 4; j++) {
+      // shiftear i j veces y tomar el bit menos significativo, si es 0 se apaga ese led y si es 1 se prende
+      digitalWrite(arr[j], (i >> j) & 1); // prender o apagar el LED según el bit correspondiente
+    }
+    }
+
+  }
